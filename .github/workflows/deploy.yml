@@ -22,7 +22,7 @@ jobs:
         npx next export
         touch out/.nojekyll
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.SUMMARY_TOKEN }}
         PREFIX: /summary
 
     - uses: peaceiris/actions-gh-pages@v3
