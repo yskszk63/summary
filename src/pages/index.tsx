@@ -9,8 +9,10 @@ function depsRs(repo: Repository): JSX.Element {
         <a
           href={`https://deps.rs/repo/github/${repo.nameWithOwner}`}
           target="_blank"
+          rel="noreferrer"
         >
           <img
+            alt="badge"
             src={`https://deps.rs/repo/github/${repo.nameWithOwner}/status.svg`}
           />
         </a>
@@ -27,8 +29,10 @@ function goReportCard(repo: Repository): JSX.Element {
         <a
           href={`https://goreportcard.com/report/${repo.nameWithOwner}`}
           target="_blank"
+          rel="noreferrer"
         >
           <img
+            alt="badge"
             src={`https://goreportcard.com/badge/github.com/${repo.nameWithOwner}`}
           />
         </a>
@@ -84,6 +88,7 @@ export default function Home(
                       <a
                         href={`https://github.com/${repo.nameWithOwner}`}
                         target="_blank"
+                        rel="noreferrer"
                       >
                         {repo.name}
                       </a>
