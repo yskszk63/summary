@@ -2,44 +2,46 @@ import Head from "next/head";
 import { iterRepositories, Repository } from "../lib/github";
 import "nes.css/css/nes.min.css";
 
-function depsRs(repo: Repository): JSX.Element {
-  if (repo.languages.nodes.some((node) => node.name === "Rust")) {
-    return (
-      <>
-        <a
-          href={`https://deps.rs/repo/github/${repo.nameWithOwner}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img
-            alt="badge"
-            src={`https://deps.rs/repo/github/${repo.nameWithOwner}/status.svg`}
-          />
-        </a>
-      </>
-    );
+function DepsRs({ repo }: { repo: Repository }): JSX.Element {
+  if (!repo.languages.nodes.some(({ name }) => name === "Rust")) {
+    return <>-</>;
   }
-  return <>-</>;
+
+  return (
+    <>
+      <a
+        href={`https://deps.rs/repo/github/${repo.nameWithOwner}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          alt="badge"
+          src={`https://deps.rs/repo/github/${repo.nameWithOwner}/status.svg`}
+        />
+      </a>
+    </>
+  );
 }
 
-function goReportCard(repo: Repository): JSX.Element {
-  if (repo.languages.nodes.some((node) => node.name === "Go")) {
-    return (
-      <>
-        <a
-          href={`https://goreportcard.com/report/${repo.nameWithOwner}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img
-            alt="badge"
-            src={`https://goreportcard.com/badge/github.com/${repo.nameWithOwner}`}
-          />
-        </a>
-      </>
-    );
+function GoReportCard({ repo }: { repo: Repository }): JSX.Element {
+  if (!repo.languages.nodes.some((node) => node.name === "Go")) {
+    return <>-</>;
   }
-  return <>-</>;
+
+  return (
+    <>
+      <a
+        href={`https://goreportcard.com/report/${repo.nameWithOwner}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          alt="badge"
+          src={`https://goreportcard.com/badge/github.com/${repo.nameWithOwner}`}
+        />
+      </a>
+    </>
+  );
 }
 
 function fmt(text: string): string {
@@ -47,18 +49,22 @@ function fmt(text: string): string {
   return new Intl.DateTimeFormat("en-US").format(d);
 }
 
-export default function Home(
-  { repositories, lastupdate }: {
-    repositories: Repository[];
-    lastupdate: string;
-  },
-) {
+export default function Home({
+  repositories,
+  lastupdate,
+}: {
+  repositories: Repository[];
+  lastupdate: string;
+}) {
   return (
     <div>
       <Head>
         <title>My repositories summary.</title>
         <meta name="description" content="My repositories summary." />
-        <link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAGAAACH5BAEKAP8ALAAAAAABAAEAAAgEAP8FBAA7" />
+        <link
+          rel="icon"
+          href="data:image/gif;base64,R0lGODlhAQABAGAAACH5BAEKAP8ALAAAAAABAAEAAAgEAP8FBAA7"
+        />
       </Head>
 
       <main>
@@ -69,7 +75,10 @@ export default function Home(
           <p className="title">Last update</p>
           <p>{lastupdate}</p>
         </div>
-        <div className="nes-table-responsive">
+        <div
+          className="nes-table-responsive"
+          style={{ backgroundColor: "#212529" }}
+        >
           <table className="nes-table is-bordered is-dark">
             <thead>
               <tr>
@@ -81,25 +90,27 @@ export default function Home(
               </tr>
             </thead>
             <tbody>
-              {repositories.map((repo) =>
-                (
-                  <tr key={repo.name}>
-                    <td>
-                      <a
-                        href={`https://github.com/${repo.nameWithOwner}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {repo.name}
-                      </a>
-                    </td>
-                    <td>{fmt(repo.createdAt)}</td>
-                    <td>{fmt(repo.pushedAt)}</td>
-                    <td>{depsRs(repo)}</td>
-                    <td>{goReportCard(repo)}</td>
-                  </tr>
-                )
-              )}
+              {repositories.map((repo) => (
+                <tr key={repo.name}>
+                  <td>
+                    <a
+                      href={`https://github.com/${repo.nameWithOwner}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {repo.name}
+                    </a>
+                  </td>
+                  <td>{fmt(repo.createdAt)}</td>
+                  <td>{fmt(repo.pushedAt)}</td>
+                  <td>
+                    <DepsRs repo={repo} />
+                  </td>
+                  <td>
+                    <GoReportCard repo={repo} />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

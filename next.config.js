@@ -1,5 +1,5 @@
-const basePath = process.env['PREFIX'] || '';
+const basePath = process.env["PREFIX"] || "";
 
-module.exports = {
-    basePath,
-}
+export default {
+  basePath,
+};

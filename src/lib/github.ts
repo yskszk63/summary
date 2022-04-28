@@ -49,10 +49,11 @@ export async function* iterRepositories(): AsyncGenerator<Repository> {
     }`;
   let param = {};
   while (true) {
-    const { viewer: { repositories: { nodes, pageInfo } } } = await client(
-      QUERY,
-      param,
-    );
+    const {
+      viewer: {
+        repositories: { nodes, pageInfo },
+      },
+    } = await client(QUERY, param);
     yield* nodes;
     if (pageInfo.hasNextPage) {
       param = {

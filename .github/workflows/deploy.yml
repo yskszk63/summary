@@ -3,29 +3,30 @@ name: Deploy
 on:
   push:
   schedule:
-    - cron: '10 10 * * 1'
+    - cron: "10 10 * * 1"
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-    - uses: actions/setup-node@v1
-      with:
-        node-version: "16.9"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
 
-    - run: |
-        rm -rf docs
-        npm install
-        npm run build
-        npx next export
-        touch out/.nojekyll
-      env:
-        GITHUB_TOKEN: ${{ secrets.SUMMARY_TOKEN }}
-        PREFIX: /summary
+      - run: |
+          rm -rf docs
+          corepack enable npm
+          npm ci
+          npm run build
+          touch out/.nojekyll
+        env:
+          GITHUB_TOKEN: ${{ secrets.SUMMARY_TOKEN }}
+          PREFIX: /summary
 
-    - uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: out
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: out
